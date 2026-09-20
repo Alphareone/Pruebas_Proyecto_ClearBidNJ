@@ -1,0 +1,9 @@
+# Python
+venv/
+__pycache__/
+*.db
+
+# Node / React
+node_modules/
+dist/
+.env
