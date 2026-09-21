@@ -1,103 +1,152 @@
 
-# 🏡 ClearBid NJ - Sistema de Inteligencia Pre-Puja de Renates en New Jersey (SIPP-RNJ)
+# 🏡 ClearBid NJ - Sistema de Inteligencia Pre-Puja de Remates en New Jersey (SIPPRI)
 
-Plataforma inteligente de análisis y evaluación de riesgos para remates judiciales inmobiliarios (*Sheriff Sales*) en el estado de New Jersey. El objetivo del sistema es procesar variables críticas de deuda y gravámenes federales para emitir un semáforo de riesgo automatizado antes de la inversión.
-
----
-
-## 🛠️ Estado Actual del Proyecto (Fase 2: Arquitectura e Implementación)
-Actualmente contamos con el **Núcleo Funcional (MVP) del Backend** implementado bajo una arquitectura modular limpia (Clean Architecture), con persistencia en base-de-datos y un motor de reglas operativo.
+Plataforma inteligente de análisis y evaluación de riesgos para remates judiciales inmobiliarios (*Sheriff Sales*) en el estado de New Jersey. El objetivo del sistema es procesar variables críticas de deuda y gravámenes para emitir un semáforo de riesgo automatizado antes de la inversión.
 
 ---
 
-## 🚀 Instrucciones de Configuración y Ejecución (Backend)
+## 🛠️ Estado Actual del Proyecto (Fase 2: Arquitectura e Implementación en Paralelo)
+Actualmente contamos con el **Núcleo Funcional (MVP) del Backend** implementado en una estructura modular limpia, con persistencia en base de datos y un motor de reglas operativo. 
 
-Sigue estos pasos en tu terminal para levantar el entorno de desarrollo local:
+Para trabajar en equipo de forma ordenada sin pisarnos el código, hemos distribuido el proyecto en un formato **monorepo** y utilizado **ramas independientes por rol**.
+
+---
+
+## 🌿 Estrategia de Ramas por Rol en Git
+Antes de empezar a programar, asegúrate de cambiarte a la rama correspondiente a tu rol:
+* **`main`**: Rama estable oficial.
+* **`feature/backend`**: Exclusiva para la lógica de la API y rutas (`backend/app/`).
+* **`feature/frontend`**: Exclusiva para la interfaz visual en React (`frontend/src/`).
+* **`feature/data-engine`**: Enfocada en modelos de base de datos, ORM y motor de riesgo.
+* **`feature/devops-qa`**: Enfocada en pruebas automáticas (`tests/`) y validación de calidad.
+
+Para moverte a tu rama, ejecuta en tu terminal:
+```bash
+git checkout tu-rama-asignada
+
+```
+
+---
+
+## 🚀 Guía de Configuración y Ejecución Paso a Paso
 
 ### 1. Clonar el repositorio y entrar al directorio
+
 ```bash
 git clone [https://github.com/Alphareone/Pruebas_Proyecto_ClearBidNJ.git](https://github.com/Alphareone/Pruebas_Proyecto_ClearBidNJ.git)
 cd Pruebas_Proyecto_ClearBidNJ
 
 ```
 
-### 2. Crear y activar el entorno virtual
+---
 
+### 2. Cómo Levantar el Backend (FastAPI)
+
+1. Entra a la carpeta del backend:
+```bash
+cd backend
+
+```
+
+
+2. Crear y activar el entorno virtual:
 * **En Windows (PowerShell):**
 ```bash
-python -m venv venv
+python -m venv .venv
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-.\venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 
 ```
 
 
 * **En Mac / Linux:**
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 
 ```
 
 
 
-### 3. Instalar las dependencias
 
+3. Instalar las dependencias:
 ```bash
 pip install -r requirements.txt
 
 ```
 
-### 4. Ejecutar el Servidor de Desarrollo
 
+4. Ejecutar el Servidor de Desarrollo:
 ```bash
 uvicorn app.main:app --reload
 
 ```
 
-Una vez iniciado, el servidor correrá en `http://127.0.0.1:8000`. Puedes acceder a la documentación interactiva de la API (Swagger UI) en:
-👉 **`http://127.0.0.1:8000/docs`**
+
+
+*✨ El servidor correrá en `http://127.0.0.1:8000`. Puedes probar la API interactivamente en:* 👉 **`http://127.0.0.1:8000/docs`**
+
+---
+
+### 3. Cómo Levantar el Frontend (React + Vite)
+
+1. Abre **otra pestaña o ventana de tu terminal** y entra a la carpeta del frontend:
+```bash
+cd frontend
+
+```
+
+
+2. Instala las dependencias de Node.js:
+```bash
+npm install
+
+```
+
+
+3. Inicia el servidor de desarrollo visual:
+```bash
+npm run dev
+
+```
+
+
+
+*✨ La interfaz web estará disponible en el puerto local indicado en pantalla (usualmente `http://localhost:5173`).*
 
 ---
 
 ## 👥 Plan de Trabajo y Asignación de Tareas - Fase 2
 
-Debido al retraso inicial y la necesidad de acelerar la integración horizontal, el equipo se dividirá las siguientes responsabilidades críticas para los próximos días:
+Debido al retraso inicial y la necesidad de acelerar el desarrollo, cada integrante avanzará en paralelo sobre su módulo correspondiente:
 
-### 📋 Integrante 1: Backend y Datos (En curso / Refinamiento)
+### 🧠 Backend & Security (Alfredo)
 
-* **Objetivo:** Ampliar los endpoints y refinar el motor de reglas.
-* **Tareas:**
-* Agregar nuevos campos al modelo de propiedades (ej. fecha de subasta, tasación base, condado específico de NJ).
-* Crear filtros avanzados de búsqueda por gravámenes del IRS y umbrales de deuda.
-* Documentar los modelos de datos para la sincronización con el frontend.
+* Ampliar y refinar los endpoints de FastAPI.
+* Agregar campos al modelo de propiedades (fecha de subasta, tasación, condados de NJ).
+* Consolidar los contratos de datos (JSON) para la comunicación con el frontend.
 
+### 💻 Frontend Lead (Cristopher)
 
+* Configurar la estructura base de React con Vite y componentes visuales.
+* Diseñar el panel de control (*Dashboard*) con indicadores del semáforo de riesgo (Verde, Amarillo, Rojo).
+* Conectar los formularios de la interfaz con los endpoints de la API (`POST /api/v1/properties/`).
 
-### 💻 Integrante 2: Frontend y Consumo de API (React + Vite)
+### 🗄️ Database & Data Engine (Felipe)
 
-* **Objetivo:** Desarrollar la interfaz gráfica de usuario conectada al backend.
-* **Tareas:**
-* Configurar la estructura base del Frontend con React y Vite.
-* Diseñar la vista principal del panel de control (*Dashboard*) con indicadores visuales del semáforo de riesgo (Verde, Amarillo, Rojo).
-* Implementar el formulario de registro de propiedades que consuma directamente el endpoint `POST /api/v1/properties/` de FastAPI.
+* Estructurar migraciones limpias y robustas con SQLAlchemy.
+* Alimentar la base de datos local con un set inicial de propiedades de prueba en New Jersey.
+* Perfeccionar las reglas lógicas del motor de evaluación de riesgos.
 
+### 🧪 DevOps, QA & Async Services (Matías)
 
-
-### 🧪 Integrante 3: QA, Pruebas y Documentación (Capstones)
-
-* **Objetivo:** Garantizar la calidad del software y cumplir con la pauta académica.
-* **Tareas:**
-* Escribir pruebas unitarias e integración en la carpeta `tests/` usando `Pytest`.
-* Consolidar las evidencias técnicas y redactar las conclusiones para el **Informe de Avance (Fase 2)** y el **Diario de Reflexión**.
-* Monitorear la integración continua en el repositorio de GitHub.
-
-
+* Escribir pruebas unitarias e de integración en la carpeta `tests/` usando `Pytest`.
+* Validar que la guía de instalación del `README.md` funcione sin errores para todo el equipo.
+* Consolidar evidencias técnicas para el Google Drive y apoyar en el control de calidad.
 
 ---
-# 📂 Estructura Completa del Repositorio - ClearBid NJ
 
-A continuación se detalla la arquitectura de directorios del repositorio de pruebas (`Pruebas_Proyecto_ClearBidNJ`), organizada de forma modular para soportar el desarrollo en paralelo de la Fase 2.
+## 📂 Estructura Completa del Repositorio
 
 ```text
 Pruebas_Proyecto_ClearBidNJ/
@@ -120,20 +169,27 @@ Pruebas_Proyecto_ClearBidNJ/
 │   └── vite.config.js                    # Configuración de Vite / entorno de desarrollo
 │
 ├── .gitignore                            # Archivos excluidos de Git (ej. .venv, node_modules)
-└── README.md                             # Guía paso a paso y documentación técnica para el equipo
+└── README.md                             # Esta documentación técnica del equipo
 
 ```
 
 ---
 
-### ¿Cómo subir este archivo a GitHub rápidamente?
+## 📋 Protocolo de Evidencias y Comunicación
 
-1. Ve a tu proyecto en Visual Studio Code.
-2. Abre o reemplaza el contenido del archivo `README.md` que está en la raíz con el texto de arriba.
-3. Guarda los cambios (`Ctrl + S`).
-4. Ejecuta estos comandos en tu terminal para actualizar el repositorio:
-   ```powershell
+1. **Trabaja en tu rama:** Haz commits limpios y descriptivos en tu rama asignada.
+2. **Comparte avances:** Publica tus capturas o avances en el **grupo de WhatsApp** del equipo.
+3. **Guarda respaldos:** Sube las evidencias requeridas a la carpeta compartida de **Google Drive**.
+
+```
+
+### ¿Cómo actualizarlo en tu repositorio?
+1. Copia todo este código en formato Markdown.
+2. Reemplaza el contenido del archivo `README.md` en la raíz de tu proyecto en Visual Studio Code.
+3. Guarda los cambios y súbelo a GitHub con estos comandos en tu terminal:
+   ```bash
    git add README.md
-   git commit -m "docs: update README with setup instructions and Phase 2 task breakdown"
+   git commit -m "docs: comprehensive update of README with separated backend/frontend instructions and role breakdown"
    git push origin main
 
+```
