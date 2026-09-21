@@ -95,22 +95,32 @@ Debido al retraso inicial y la necesidad de acelerar la integración horizontal,
 
 
 ---
+# 📂 Estructura Completa del Repositorio - ClearBid NJ
 
-## 📂 Estructura del Repositorio
+A continuación se detalla la arquitectura de directorios del repositorio de pruebas (`Pruebas_Proyecto_ClearBidNJ`), organizada de forma modular para soportar el desarrollo en paralelo de la Fase 2.
 
 ```text
-├── app/                      # Código fuente principal (FastAPI)
-│   ├── api/v1/endpoints/     # Rutas y controladores HTTP
-│   ├── crud/                 # Lógica de acceso a datos
-│   ├── models/               # Modelos de Base de Datos (SQLAlchemy)
-│   ├── schemas/              # Validación de esquemas (Pydantic)
-│   ├── database.py           # Conexión y sesión de BD
-│   └── main.py               # Punto de entrada de la aplicación
-├── tests/                    # Pruebas automatizadas (Pytest)
-├── requirements.txt          # Dependencias del proyecto
-└── README.md                 # Documentación técnica
-
-```
+Pruebas_Proyecto_ClearBidNJ/
+│
+├── backend/                              # 🧠 Rama: feature/backend (FastAPI & Lógica)
+│   ├── app/                              # Código fuente principal del backend
+│   │   ├── api/                          # Endpoints y rutas HTTP (v1)
+│   │   ├── crud/                         # Lógica de acceso e interacción con la BD
+│   │   ├── models/                       # Modelos de Base de Datos (SQLAlchemy)
+│   │   ├── schemas/                      # Esquemas de validación de datos (Pydantic)
+│   │   ├── database.py                   # Configuración de conexión y sesión de BD
+│   │   └── main.py                       # Punto de entrada principal de la API
+│   ├── tests/                            # Pruebas automatizadas (Pytest)
+│   └── requirements.txt                  # Dependencias de Python del proyecto
+│
+├── frontend/                             # 💻 Rama: feature/frontend (React & UI)
+│   ├── src/                              # Componentes, vistas y lógica visual
+│   ├── public/                           # Archivos estáticos e imágenes
+│   ├── package.json                      # Dependencias de Node.js / React
+│   └── vite.config.js                    # Configuración de Vite / entorno de desarrollo
+│
+├── .gitignore                            # Archivos excluidos de Git (ej. .venv, node_modules)
+└── README.md                             # Guía paso a paso y documentación técnica para el equipo
 
 ```
 
