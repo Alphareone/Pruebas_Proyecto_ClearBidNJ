@@ -127,6 +127,3 @@ Debido al retraso inicial y la necesidad de acelerar la integración horizontal,
    git commit -m "docs: update README with setup instructions and Phase 2 task breakdown"
    git push origin main
 
-```
-
-Con esto, cualquier compañero que abra el repositorio sabrá exactamente qué hacer, cómo correr el sistema y qué parte del proyecto le toca liderar. ¿Te parece bien esta distribución de tareas?
