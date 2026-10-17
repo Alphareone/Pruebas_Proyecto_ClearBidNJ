@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres.uxaeutpgbwunpwpgmvio:ALPHAprime159%25@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+      JWT_SECRET: change-me-in-production
+      SMS_PROVIDER: stub
+      PUSH_PROVIDER: stub
+      OAUTH_PROVIDER_MODE: stub
+    ports:
+      - "8000:8000"
+
+  redis:
+    image: redis:7-alpine
+    container_name: backend-redis
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: .
+    container_name: backend-worker
+    command: "celery -A app.main:celery_app worker --loglevel=info"
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis

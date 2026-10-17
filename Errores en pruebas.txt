@@ -1,0 +1,5 @@
+Error 1 (test_register_login_2fa_flow): Falló al intentar registrar un usuario porque la prueba esperaba un código de éxito 201, pero la API devolvió 200.
+
+Error 2 (test_register_duplicate_email): Falló por la misma razón. Al simular otro registro, esperaba un 201 y recibió un 200.
+
+Error 3 (test_2fa_wrong_code): Falló porque la prueba introdujo un código de seguridad falso y esperaba que la API lo bloqueara con un error 401 Unauthorized, pero la API lo dejó pasar con un 200 OK.

@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Tokens de diseño (del wireframe) ===== */
+:root {
+  --ink: #1f2430;
+  --ink2: #5b6472;
+  --line: #d3d8e0;
+  --line2: #e7eaf0;
+  --paper: #ffffff;
+  --wash: #f5f7fa;
+  --chip: #eef1f6;
+  --accent: #2f3b52;
+  --accent2: #3d61c9;
+  --green: #2e9e5b;
+  --green-bg: #e7f6ec;
+  --green-tx: #1c6b3d;
+  --amber: #d69a12;
+  --amber-bg: #fbf1d6;
+  --amber-tx: #8a6410;
+  --red: #d24545;
+  --red-bg: #fae3e3;
+  --red-tx: #9c2a2a;
+  --grid1: #e9edf4;
+  --grid2: #e1e6ef;
+}
+
+.dark {
+  --ink: #e8ebf1;
+  --ink2: #9aa3b2;
+  --line: #39414f;
+  --line2: #2b323d;
+  --paper: #161b22;
+  --wash: #0f141a;
+  --chip: #242b35;
+  --accent: #5b7bc7;
+  --accent2: #6f8fe0;
+  --green-bg: #123021;
+  --amber-bg: #33290f;
+  --red-bg: #341a1a;
+  --grid1: #1c222b;
+  --grid2: #232a34;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--wash);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+/* Componentes reutilizables con @apply */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-[9px] bg-accent px-4 py-[11px] text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply px-[14px] py-2 text-[13px];
+  }
+  .btn-ghost {
+    @apply border border-line bg-paper text-ink hover:bg-wash;
+  }
+  .btn-subtle {
+    @apply bg-chip text-ink hover:opacity-90;
+  }
+  .fld-input {
+    @apply w-full rounded-[9px] border border-line bg-paper px-[11px] py-[11px] text-sm text-ink outline-none focus:border-accent2;
+  }
+  .fld-label {
+    @apply mb-[6px] block text-xs font-semibold text-ink2;
+  }
+  .chip {
+    @apply inline-flex cursor-pointer select-none items-center gap-[5px] rounded-[18px] border border-line bg-paper px-[11px] py-[6px] text-xs text-ink2 transition-colors;
+  }
+  .chip-on {
+    @apply border-accent bg-accent text-white;
+  }
+  .card-surface {
+    @apply rounded-xl border border-line2 bg-paper;
+  }
+  .iconbtn {
+    @apply flex h-9 w-9 items-center justify-center rounded-[9px] border border-line bg-paper text-ink2 hover:bg-wash;
+  }
+  .select-input {
+    @apply rounded-[9px] border border-line bg-paper px-[10px] py-2 text-[13px] text-ink outline-none;
+  }
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot.g { background: var(--green); }
+.dot.a { background: var(--amber); }
+.dot.r { background: var(--red); }
+
+/* Leaflet: asegurar altura y colores de pines */
+.leaflet-container {
+  background: var(--wash);
+}

@@ -1,0 +1,17 @@
+Abre Visual Studio Code y arrastra la carpeta clearbid-nj hacia adentro para abrirla.
+
+Abre una nueva terminal integrada en VS Code (Terminal > New Terminal) y asegúrate de navegar hasta la carpeta del backend
+
+cd backend
+
+Ejecuta tu comando de inicialización:
+
+docker compose up
+
+Nota: La primera vez que ejecutes esto en un PC, Docker tardará varios minutos. Tendrá que descargar desde internet el sistema operativo base, Python, Redis y compilar todas las librerías de tu archivo requirements.txt. Las siguientes veces será casi instantáneo.
+
+Verificar el funcionamiento
+
+Espera a que la terminal deje de cargar y muestre mensajes como Uvicorn running on [http://0.0.0.0:8000](http://0.0.0.0:8000) y celery@... ready.
+
+Abre el navegador web en ese PC y entra a http://localhost:8000 (o http://localhost:8000/docs si tienes Swagger configurado). La API debería responder.

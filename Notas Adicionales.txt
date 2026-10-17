@@ -1,0 +1,9 @@
+Notas Adicionales
+
+el Ipvc6, NO sirve, tuve que cambiarlo en la Supabase hacia Ipvc4, no pude dejarla con ambas, porque hay que pagar plata.
+
+coloque un código SQL PA QUE ESTA COSA NO ME DE FALLOS, no recuerdo porque era honestamente.
+
+debería funcionar solo en Nube, en nativo pc, pide otras cosas, que si, también hice, pero hay que usar otras cosas, use docker para la api directa en Supabase
+
+NO SIRVE si no tiene la contraseña que se le a colocado
