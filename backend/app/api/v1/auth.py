@@ -1,9 +1,9 @@
 """Módulo 5.1 — Autenticación y 2FA."""
+import uuid
 import jwt
 from fastapi import APIRouter, Depends, Request, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.core.security import create_access_token, create_refresh_token
 
 from app.core import errors
 from app.core.deps import get_current_user
@@ -55,7 +55,6 @@ def _rate_limit(request: Request, bucket: str) -> None:
         raise errors.rate_limited(retry)
 
 
-
 @router.post(
     "/register",
     response_model=RegisterResponse,
@@ -91,8 +90,8 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
     return RegisterResponse(
         user_id=user.id,
         challenge_id=challenge.id,
-        method="sms",
-        masked_phone=auth_service.mask_phone(user.phone),
+        method="email",  # Cambiado de "sms" a "email"
+        masked_phone=user.email,  # Muestra el e-mail en el frontend
     )
 
 
@@ -100,7 +99,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
     "/login",
     response_model=ChallengeResponse,
     summary="Login (primer factor)",
-    description="Verifica email y contraseña. Si es correcto, inicia el reto 2FA por SMS.",
+    description="Verifica email y contraseña. Si es correcto, inicia el reto 2FA por correo.",
     responses={401: {"description": "Credenciales inválidas"}, 429: {}},
 )
 async def login(body: LoginRequest, request: Request, db: AsyncSession = Depends(get_db)):
@@ -118,7 +117,8 @@ async def login(body: LoginRequest, request: Request, db: AsyncSession = Depends
 
     challenge, _ = await auth_service.create_otp_challenge(db, user, purpose="login")
     return ChallengeResponse(
-        challenge_id=challenge.id, masked_phone=auth_service.mask_phone(user.phone)
+        challenge_id=challenge.id,
+        masked_phone=user.email  # Muestra el e-mail del usuario
     )
 
 
@@ -190,7 +190,7 @@ async def oauth_login(
     "/2fa/send",
     response_model=Send2FAResponse,
     summary="Reenviar código 2FA",
-    description="Reenvía el código SMS asociado a un reto existente. Sujeto a rate limiting.",
+    description="Reenvía el código 2FA asociado a un reto existente. Sujeto a rate limiting.",
     responses={404: {"description": "Reto inexistente"}, 429: {}},
 )
 async def resend_2fa(
@@ -205,9 +205,6 @@ async def resend_2fa(
     from app.core.config import settings
     return Send2FAResponse(sent=True, expires_in=settings.OTP_EXPIRE_SECONDS)
 
-
-
-import uuid
 
 @router.post(
     "/2fa/verify",
@@ -243,6 +240,7 @@ async def verify_2fa(
         token_type="bearer",
         expires_in=3600
     )
+
 
 @router.post(
     "/token/refresh",
