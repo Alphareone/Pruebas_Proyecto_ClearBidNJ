@@ -83,12 +83,12 @@ export default function DetailDrawer({ id, onClose }: { id: string | null; onClo
               </div>
             </div>
 
-            <div className="flex gap-1 border-b border-line2 px-4 pt-2">
+            <div className="flex gap-1 border-b border-line2 px-4 pt-2 overflow-x-auto">
               {TABS.map(([id2, lbl]) => (
                 <button
                   key={id2}
                   onClick={() => setTab(id2)}
-                  className={`rounded-t-lg px-3 py-2 text-[13px] font-semibold ${
+                  className={`whitespace-nowrap rounded-t-lg px-3 py-2 text-[13px] font-semibold ${
                     tab === id2 ? "border-b-2 border-accent text-ink" : "text-ink2"
                   }`}
                 >
@@ -100,13 +100,8 @@ export default function DetailDrawer({ id, onClose }: { id: string | null; onClo
             <div className="flex-1 overflow-y-auto p-[16px_20px]">
               {tab === "fin" && (
                 <>
-                  <div
-                    className="mb-3 rounded-xl p-4 text-center"
-                    style={{ background: `var(--${flagBg(p.flag)})` }}
-                  >
-                    <div className="text-3xl font-extrabold">
-                      {roiText(p.financial.estimated_roi)}
-                    </div>
+                  <div className="mb-3 rounded-xl p-4 text-center" style={{ background: `var(--${flagBg(p.flag)})` }}>
+                    <div className="text-3xl font-extrabold">{roiText(p.financial.estimated_roi)}</div>
                     <div className="text-xs text-ink2">{t("roi_cap")}</div>
                   </div>
                   <KV k={t("fin_opening")} v={money(p.financial.opening_price)} />
@@ -149,17 +144,10 @@ export default function DetailDrawer({ id, onClose }: { id: string | null; onClo
               )}
               {tab === "sem" && (
                 <>
-                  <div
-                    className="mb-3 flex items-start gap-2 rounded-xl p-3"
-                    style={{ background: `var(--${flagBg(p.flag)})` }}
-                  >
+                  <div className="mb-3 flex items-start gap-2 rounded-xl p-3" style={{ background: `var(--${flagBg(p.flag)})` }}>
                     <i className={`dot ${flagShort(p.flag)} mt-1`} />
                     <b>
-                      {flagShort(p.flag) === "g"
-                        ? t("flag_g")
-                        : flagShort(p.flag) === "a"
-                          ? t("flag_a")
-                          : t("flag_r")}
+                      {flagShort(p.flag) === "g" ? t("flag_g") : flagShort(p.flag) === "a" ? t("flag_a") : t("flag_r")}
                     </b>
                   </div>
                   <div className="mb-2 text-xs font-semibold uppercase text-ink2">{t("sem_rules")}</div>

@@ -88,6 +88,7 @@ export interface PropertyListItem {
   flag: Flag | null;
   opening_price: number | null;
   estimated_value: number | null;
+  estimated_roi: number | null;
   auction_date: string | null;
   thumbnail_url: string | null;
 }

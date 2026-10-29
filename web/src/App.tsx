@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 import Toast from "@/components/ui/Toast";
+import FloatingAssistant from "@/components/properties/FloatingAssistant";
 import AppShell from "@/components/layout/AppShell";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import LoginPage from "@/pages/LoginPage";
@@ -49,6 +50,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toast />
+      <FloatingAssistant />
     </>
   );
 }
