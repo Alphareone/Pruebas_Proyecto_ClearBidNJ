@@ -2,6 +2,7 @@
 import hashlib
 import secrets
 import smtplib
+import os
 from datetime import datetime, timedelta, timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -25,7 +26,6 @@ def mask_phone(phone: str | None) -> str | None:
     if len(digits) < 4:
         return "•••"
     last4 = digits[-4:]
-    # Heurística simple para formato NANP (+1 AAA XXX-YYYY)
     if digits.startswith("1") and len(digits) == 11:
         area = digits[1:4]
         return f"+1 ({area}) •••-{last4}"
@@ -34,19 +34,20 @@ def mask_phone(phone: str | None) -> str | None:
 
 def send_email_otp(to_email: str, code: str) -> None:
     """Envía el código de verificación por correo electrónico usando SMTP."""
-    smtp_user = getattr(settings, "SMTP_USER", None)
-    smtp_host = getattr(settings, "SMTP_HOST", None)
-    smtp_port = getattr(settings, "SMTP_PORT", 587)
-    smtp_pass = getattr(settings, "SMTP_PASSWORD", None)
+    # Lee desde settings o directamente de las variables de entorno
+    smtp_user = getattr(settings, "SMTP_USER", None) or os.getenv("SMTP_USER")
+    smtp_host = getattr(settings, "SMTP_HOST", None) or os.getenv("SMTP_HOST", "smtp.gmail.com")
+    smtp_port = getattr(settings, "SMTP_PORT", None) or os.getenv("SMTP_PORT", 587)
+    smtp_pass = getattr(settings, "SMTP_PASSWORD", None) or os.getenv("SMTP_PASSWORD")
 
-    # Si no están configuradas las credenciales SMTP en el .env, usa el modo Stub
-    if not smtp_user or not smtp_host:
-        print(f"[EMAIL-STUB] Para {to_email}: Tu código ClearBid NJ es {code}")
+    # Si no hay credenciales cargadas, informa el problema en la terminal
+    if not smtp_user or not smtp_pass:
+        print(f"[EMAIL-STUB] (Falta SMTP_USER o SMTP_PASSWORD en .env) Para {to_email}: Tu código ClearBid NJ es {code}")
         return
 
     try:
         msg = MIMEMultipart()
-        sender_name = getattr(settings, "EMAILS_FROM_NAME", "ClearBid NJ")
+        sender_name = getattr(settings, "EMAILS_FROM_NAME", "ClearBid NJ") or os.getenv("EMAILS_FROM_NAME", "ClearBid NJ Auth")
         msg["From"] = f"{sender_name} <{smtp_user}>"
         msg["To"] = to_email
         msg["Subject"] = f"Código de verificación ClearBid NJ: {code}"
@@ -69,7 +70,6 @@ Si no solicitaste este código, puedes ignorar este mensaje.
         print(f"[EMAIL-SUCCESS] Código enviado correctamente a {to_email}")
     except Exception as e:
         print(f"[EMAIL-ERROR] Fallo al enviar correo a {to_email}: {e}")
-        # Muestra el código en la consola si falla la conexión SMTP
         print(f"[EMAIL-FALLBACK] Código para {to_email}: {code}")
 
 
@@ -89,7 +89,6 @@ async def create_otp_challenge(
     db.add(challenge)
     await db.flush()
 
-    # Se prioriza el envío al correo electrónico del usuario
     target_email = getattr(user, "email", None)
     if target_email:
         send_email_otp(target_email, code)

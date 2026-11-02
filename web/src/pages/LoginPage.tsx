@@ -24,7 +24,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -39,23 +39,37 @@ async function onSubmit(e: React.FormEvent) {
           phone,
         });
 
-        // Redirige al 2FA tras registrarse con éxito
+        // Redirige al 2FA tras registrarse con éxito pasando el correo explícito
         navigate("/verify", {
-          state: { challengeId: res.challenge_id, maskedPhone: res.masked_phone },
+          state: {
+            challengeId: res.challenge_id,
+            email,
+            maskedPhone: res.masked_phone,
+          },
         });
       } else {
         // --- INICIO DE SESIÓN ---
         const challenge = await authApi.login(email, password);
         navigate("/verify", {
-          state: { challengeId: challenge.challenge_id, maskedPhone: challenge.masked_phone },
+          state: {
+            challengeId: challenge.challenge_id,
+            email,
+            maskedPhone: challenge.masked_phone,
+          },
         });
       }
     } catch (err) {
-      setError(errorMessage(err, isSignUp ? "Error al registrar usuario" : t("invalid_credentials")));
+      setError(
+        errorMessage(
+          err,
+          isSignUp ? "Error al registrar usuario" : t("invalid_credentials")
+        )
+      );
     } finally {
       setLoading(false);
     }
   }
+
   async function onOAuth(provider: string) {
     setLoading(true);
     setError(null);
@@ -63,7 +77,11 @@ async function onSubmit(e: React.FormEvent) {
       const idToken = `stub:${email || `${provider}user@oauth.stub`}`;
       const res = await authApi.oauth(provider, idToken);
       navigate("/verify", {
-        state: { challengeId: res.challenge_id, maskedPhone: res.masked_phone },
+        state: {
+          challengeId: res.challenge_id,
+          email,
+          maskedPhone: res.masked_phone,
+        },
       });
     } catch (err) {
       setError(errorMessage(err));
@@ -82,7 +100,9 @@ async function onSubmit(e: React.FormEvent) {
       </p>
 
       {error && (
-        <div className="mb-3 rounded-lg bg-red-bg px-3 py-2 text-sm text-red-tx">{error}</div>
+        <div className="mb-3 rounded-lg bg-red-bg px-3 py-2 text-sm text-red-tx">
+          {error}
+        </div>
       )}
 
       <form onSubmit={onSubmit}>

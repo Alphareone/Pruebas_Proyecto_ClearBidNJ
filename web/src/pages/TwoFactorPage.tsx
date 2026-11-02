@@ -10,6 +10,7 @@ import { useToast } from "@/store/toast";
 
 interface LocState {
   challengeId?: string;
+  email?: string;
   maskedPhone?: string | null;
 }
 
@@ -80,7 +81,7 @@ export default function TwoFactorPage() {
     <AuthShell>
       <h2 className="mb-1 text-xl font-bold">{t("tfa_title")}</h2>
       <p className="mb-2 text-ink2">
-        {t("tfa_sub")} <b>{state.maskedPhone || ""}</b>
+        {t("tfa_sub")} <b>{state.email || state.maskedPhone || ""}</b>
       </p>
 
       {error && (
@@ -121,8 +122,7 @@ export default function TwoFactorPage() {
       </div>
 
       <p className="mt-4 text-center text-xs text-ink2">
-        {/* En modo stub, el código llega por el log del backend ([SMS-STUB]). */}
-        Stub: revisa el log del backend para el código.
+        El código de verificación expira en 5 minutos. Revisa tu bandeja de entrada o spam.
       </p>
     </AuthShell>
   );

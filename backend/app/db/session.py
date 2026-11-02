@@ -12,6 +12,7 @@ from app.core.config import settings
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=settings.DB_ECHO,
+    connect_args={"prepared_statement_cache_size": 0},
     pool_pre_ping=True,
     future=True,
 )
